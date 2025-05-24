@@ -6,17 +6,17 @@
   
   <title>論文収集 ～arXiv・国際会議論文収集ガイド～ | 技術ブログ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Chatbot4TS プロジェクトの第一歩として、予測モデルの事前学習・微調整に必要な専門論文を効率よく収集することが不可欠です。本記事では、arXiv や OpenReview（ICLR、NeurIPSなど） から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。  📌 本記事の内容 arXiv API を用いた論文PDF＋メタデータの取得 OpenReview によ">
+  <meta name="description" content="本記事では、arXiv や OpenReview（ICLR、NeurIPSなど） から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。  📌 本記事の内容 arXiv API を用いた論文PDF＋メタデータの取得 OpenReview によるトップ会議（ICLR 等）の論文収集 論文の保存形式と後処理のヒント   🧰 使用技術   項目 ツール    言語 Pyth">
 <meta property="og:type" content="article">
 <meta property="og:title" content="論文収集 ～arXiv・国際会議論文収集ガイド～">
 <meta property="og:url" content="https://jasont1202.github.io/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86%E5%85%A5%E9%96%80/index.html">
 <meta property="og:site_name" content="技術ブログ">
-<meta property="og:description" content="Chatbot4TS プロジェクトの第一歩として、予測モデルの事前学習・微調整に必要な専門論文を効率よく収集することが不可欠です。本記事では、arXiv や OpenReview（ICLR、NeurIPSなど） から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。  📌 本記事の内容 arXiv API を用いた論文PDF＋メタデータの取得 OpenReview によ">
+<meta property="og:description" content="本記事では、arXiv や OpenReview（ICLR、NeurIPSなど） から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。  📌 本記事の内容 arXiv API を用いた論文PDF＋メタデータの取得 OpenReview によるトップ会議（ICLR 等）の論文収集 論文の保存形式と後処理のヒント   🧰 使用技術   項目 ツール    言語 Pyth">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2025-05-21T15:00:00.000Z">
-<meta property="article:modified_time" content="2025-05-22T04:56:31.478Z">
+<meta property="article:modified_time" content="2025-05-24T04:56:12.363Z">
 <meta property="article:author" content="Xintong Wang">
-<meta property="article:tag" content="Chatbot4TS">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="技術ブログ" type="application/atom+xml">
@@ -100,7 +100,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><code>Chatbot4TS</code> プロジェクトの第一歩として、予測モデルの事前学習・微調整に必要な専門論文を効率よく収集することが不可欠です。本記事では、<strong>arXiv</strong> や <strong>OpenReview（ICLR、NeurIPSなど）</strong> から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。</p>
+        <p>本記事では、<strong>arXiv</strong> や <strong>OpenReview（ICLR、NeurIPSなど）</strong> から自動で関連論文を収集する Python スクリプトの作成方法をご紹介します。</p>
 <hr>
 <h2 id="📌-本記事の内容"><a href="#📌-本記事の内容" class="headerlink" title="📌 本記事の内容"></a>📌 本記事の内容</h2><ul>
 <li>arXiv API を用いた論文PDF＋メタデータの取得</li>
@@ -142,18 +142,17 @@
 <li>PDFファイル → <code>pdf/2405.xxxxx.pdf</code></li>
 <li>メタ情報 → <code>meta_arxiv.json</code>, <code>meta_openreview.json</code></li>
 </ul>
-<p>今後の記事では、これらのPDFから本文を抽出し、LoRAによる時系列予測専門LLMの構築に繋げていきます。</p>
 <hr>
 <p>© 2025 汪 新桐（Xintong Wang）<br>転載歓迎・リンク引用OK 🙌</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86%E5%85%A5%E9%96%80/" data-id="cmaywh0km0001iov42okj1pif" data-title="論文収集 ～arXiv・国際会議論文収集ガイド～" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86%E5%85%A5%E9%96%80/" data-id="cmb1rdidw0001kwv4ec2n3xwh" data-title="論文収集 ～arXiv・国際会議論文収集ガイド～" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Chatbot4TS/" rel="tag">Chatbot4TS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
 
     </footer>
   </div>
@@ -181,7 +180,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">タグ</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chatbot4TS/" rel="tag">Chatbot4TS</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
     </div>
   </div>
 
@@ -191,7 +190,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">タグクラウド</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Chatbot4TS/" style="font-size: 10px;">Chatbot4TS</a>
+      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
     </div>
   </div>
 
