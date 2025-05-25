@@ -75,12 +75,12 @@
   
     <article id="post-論文収集" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" class="article-date">
-  <time class="dt-published" datetime="2025-05-21T15:00:00.000Z" itemprop="datePublished">2025-05-22</time>
+    <a href="/2025/04/11/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" class="article-date">
+  <time class="dt-published" datetime="2025-04-10T15:00:00.000Z" itemprop="datePublished">2025-04-11</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E8%A1%93%E3%82%B7%E3%82%A7%E3%82%A2/">技術シェア</a>
+    <a class="article-category-link" href="/categories/Chat4TS-%E6%99%82%E7%B3%BB%E5%88%97%E8%A7%A3%E6%9E%90%E7%94%A8%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%83%9C%E3%83%83%E3%83%88%E3%81%AE%E8%87%AA%E4%BD%9C/">Chat4TS:時系列解析用チャットボットの自作</a>
   </div>
 
   </div>
@@ -91,7 +91,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/">論文収集とデータセット生成 ～arXivからInstruction形式まで～</a>
+      <a class="p-name article-title" href="/2025/04/11/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/">論文収集 ～arXiv～</a>
     </h1>
   
 
@@ -99,12 +99,10 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>本記事では、<strong>arXiv</strong> から自動で時系列予測論文を収集する Python スクリプトと、収集したPDFからInstruction形式のデータセットを生成する方法をご紹介します。</p>
+        <p>本記事では、<strong>arXiv</strong> から自動で時系列予測論文を収集する Python スクリプトをご紹介します。</p>
 <hr>
 <h2 id="📌-本記事の内容"><a href="#📌-本記事の内容" class="headerlink" title="📌 本記事の内容"></a>📌 本記事の内容</h2><ul>
-<li>arXiv API を用いた時系列予測論文のPDF＋メタデータ取得  </li>
-<li>PyMuPDF (fitz) を使ったPDFテキスト抽出  </li>
-<li>Instruction形式データセット (JSONL) の生成</li>
+<li>arXiv API を用いた時系列予測論文のPDF＋メタデータ取得</li>
 </ul>
 <hr>
 <h2 id="🧰-使用技術"><a href="#🧰-使用技術" class="headerlink" title="🧰 使用技術"></a>🧰 使用技術</h2><table>
@@ -122,29 +120,16 @@
 <td>論文収集</td>
 <td><code>arxiv</code>, <code>tqdm</code></td>
 </tr>
-<tr>
-<td>PDF処理</td>
-<td><code>pymupdf (fitz)</code></td>
-</tr>
-<tr>
-<td>データ加工</td>
-<td><code>json</code> モジュール</td>
-</tr>
 </tbody></table>
 <hr>
 <h2 id="🛰️-arXiv-API-による時系列予測論文収集"><a href="#🛰️-arXiv-API-による時系列予測論文収集" class="headerlink" title="🛰️ arXiv API による時系列予測論文収集"></a>🛰️ arXiv API による時系列予測論文収集</h2><p>まずは、arXiv API を活用して2025年投稿の時系列予測関連論文を最大500件取得し、PDFとメタデータを保存するスクリプトです。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sample_arxiv_download.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> arxiv</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------ Config ------------------------</span></span><br><span class="line">QUERY       = <span class="string">&#x27;all:&quot;time series&quot; AND (forecast OR prediction)&#x27;</span></span><br><span class="line">YEAR        = <span class="number">2025</span></span><br><span class="line">MAX_PAPERS  = <span class="number">500</span></span><br><span class="line">OUT_PDF     = <span class="string">&quot;pdf&quot;</span></span><br><span class="line">META_FILE   = <span class="string">&quot;meta_arxiv_2025_timeseries.json&quot;</span></span><br><span class="line"></span><br><span class="line">os.makedirs(OUT_PDF, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">client = arxiv.Client(num_retries=<span class="number">3</span>, delay_seconds=<span class="number">1.5</span>)</span><br><span class="line">search = arxiv.Search(</span><br><span class="line">    query=<span class="string">f&quot;<span class="subst">&#123;QUERY&#125;</span> AND submittedDate:[<span class="subst">&#123;YEAR&#125;</span>01010000 TO <span class="subst">&#123;YEAR&#125;</span>12312359]&quot;</span>,</span><br><span class="line">    max_results=MAX_PAPERS,</span><br><span class="line">    sort_by=arxiv.SortCriterion.Relevance</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">meta = []</span><br><span class="line"><span class="keyword">for</span> result <span class="keyword">in</span> tqdm(client.results(search), total=MAX_PAPERS):</span><br><span class="line">    pid = result.get_short_id()</span><br><span class="line">    pdf_path = os.path.join(OUT_PDF, <span class="string">f&quot;<span class="subst">&#123;pid&#125;</span>.pdf&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pdf_path):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result.download_pdf(dirpath=OUT_PDF, filename=<span class="string">f&quot;<span class="subst">&#123;pid&#125;</span>.pdf&quot;</span>)</span><br><span class="line">            time.sleep(<span class="number">0.5</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[WARN] PDF download failed for <span class="subst">&#123;pid&#125;</span>: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    meta.append(&#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: pid,</span><br><span class="line">        <span class="string">&quot;title&quot;</span>: result.title,</span><br><span class="line">        <span class="string">&quot;abstract&quot;</span>: result.summary,</span><br><span class="line">        <span class="string">&quot;authors&quot;</span>: [a.name <span class="keyword">for</span> a <span class="keyword">in</span> result.authors],</span><br><span class="line">        <span class="string">&quot;pdf&quot;</span>: pdf_path,</span><br><span class="line">        <span class="string">&quot;url&quot;</span>: result.entry_id,</span><br><span class="line">        <span class="string">&quot;updated&quot;</span>: result.updated.strftime(<span class="string">&quot;%Y-%m-%d&quot;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(meta) &gt;= MAX_PAPERS:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(META_FILE, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(meta, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;✅ Downloaded <span class="subst">&#123;<span class="built_in">len</span>(meta)&#125;</span> papers → <span class="subst">&#123;OUT_PDF&#125;</span>/, <span class="subst">&#123;META_FILE&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="📁-PDFテキスト抽出＆Instruction形式データセット生成"><a href="#📁-PDFテキスト抽出＆Instruction形式データセット生成" class="headerlink" title="📁 PDFテキスト抽出＆Instruction形式データセット生成"></a>📁 PDFテキスト抽出＆Instruction形式データセット生成</h2><p>次に、ダウンロードしたPDFをPyMuPDFで読み込み、Instruction形式のサンプルを生成します。出力はJSONLフォーマットです。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create_instruction_dataset.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> fitz  <span class="comment"># PyMuPDF</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line">PDF_FOLDER = <span class="string">&quot;./pdf&quot;</span></span><br><span class="line">OUTPUT_JSONL = <span class="string">&quot;./finetune_dataset_en.jsonl&quot;</span></span><br><span class="line">MAX_INPUT_LENGTH = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line">INSTRUCTIONS = [</span><br><span class="line">    <span class="string">&quot;Summarize the research objectives and main contributions of the following paper.&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Extract the core methodology proposed in this paper.&quot;</span>,</span><br><span class="line">    <span class="string">&quot;What datasets and evaluation metrics were used in this paper?&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Briefly summarize the experimental results and performance improvements.&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_text_from_pdf</span>(<span class="params">pdf_path</span>):</span><br><span class="line">    doc = fitz.<span class="built_in">open</span>(pdf_path)</span><br><span class="line">    text = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> i, page <span class="keyword">in</span> <span class="built_in">enumerate</span>(doc):</span><br><span class="line">        text += <span class="string">f&quot;[Page <span class="subst">&#123;i+<span class="number">1</span>&#125;</span>]</span></span><br><span class="line"><span class="string">&quot;</span> + page.get_text()</span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_instruction_samples</span>(<span class="params">text</span>):</span><br><span class="line">    samples = []</span><br><span class="line">    snippet = text[:MAX_INPUT_LENGTH]</span><br><span class="line">    <span class="keyword">for</span> ins <span class="keyword">in</span> INSTRUCTIONS:</span><br><span class="line">        samples.append(&#123;</span><br><span class="line">            <span class="string">&quot;instruction&quot;</span>: ins,</span><br><span class="line">            <span class="string">&quot;input&quot;</span>: snippet,</span><br><span class="line">            <span class="string">&quot;output&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">return</span> samples</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    all_samples = []</span><br><span class="line">    pdf_files = [f <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(PDF_FOLDER) <span class="keyword">if</span> f.endswith(<span class="string">&quot;.pdf&quot;</span>)]</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> tqdm(pdf_files, desc=<span class="string">&quot;Processing PDFs&quot;</span>):</span><br><span class="line">        path = os.path.join(PDF_FOLDER, filename)</span><br><span class="line">        text = extract_text_from_pdf(path)</span><br><span class="line">        samples = create_instruction_samples(text)</span><br><span class="line">        all_samples.extend(samples)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(OUTPUT_JSONL, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> sample <span class="keyword">in</span> all_samples:</span><br><span class="line">            f.write(json.dumps(sample, ensure_ascii=<span class="literal">False</span>) + <span class="string">&quot;</span></span><br><span class="line"><span class="string">&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;✅ Generated <span class="subst">&#123;<span class="built_in">len</span>(all_samples)&#125;</span> samples → <span class="subst">&#123;OUTPUT_JSONL&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="📁-保存形式"><a href="#📁-保存形式" class="headerlink" title="📁 保存形式"></a>📁 保存形式</h2><ul>
 <li>PDFファイル → <code>pdf/2505.xxxxx.pdf</code></li>
 <li>メタ情報 → <code>meta_arxiv_2025_timeseries.json</code></li>
-<li>Instruction形式データセット → <code>finetune_dataset_en.jsonl</code></li>
 </ul>
 <hr>
 <p>© 2025 汪 新桐（Xintong Wang）<br>ご自由に転載・リンク引用どうぞ 🙌</p>
@@ -152,12 +137,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmb33g0dy000124v49jugavqy" data-title="論文収集とデータセット生成 ～arXivからInstruction形式まで～" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/04/11/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmb36x8gn0001kgv4d5oq0i5r" data-title="論文収集 ～arXiv～" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Chat4TS/" rel="tag">Chat4TS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML-DL/" rel="tag">ML&#x2F;DL</a></li></ul>
-
     </footer>
   </div>
   
@@ -176,36 +159,22 @@
   <div class="widget-wrap">
     <h3 class="widget-title">カテゴリ</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E8%A1%93%E3%82%B7%E3%82%A7%E3%82%A2/">技術シェア</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Chat4TS-%E6%99%82%E7%B3%BB%E5%88%97%E8%A7%A3%E6%9E%90%E7%94%A8%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%83%9C%E3%83%83%E3%83%88%E3%81%AE%E8%87%AA%E4%BD%9C/">Chat4TS:時系列解析用チャットボットの自作</a></li></ul>
     </div>
   </div>
 
 
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">タグ</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chat4TS/" rel="tag">Chat4TS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ML-DL/" rel="tag">ML&#x2F;DL</a></li></ul>
-    </div>
-  </div>
-
 
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">タグクラウド</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Chat4TS/" style="font-size: 10px;">Chat4TS</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/ML-DL/" style="font-size: 10px;">ML/DL</a>
-    </div>
-  </div>
-
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">アーカイブ</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">5月 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">4月 2025</a></li></ul>
     </div>
   </div>
 
@@ -218,7 +187,7 @@
       <ul>
         
           <li>
-            <a href="/2025/05/22/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/">論文収集とデータセット生成 ～arXivからInstruction形式まで～</a>
+            <a href="/2025/04/11/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/">論文収集 ～arXiv～</a>
           </li>
         
       </ul>
