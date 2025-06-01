@@ -73,6 +73,135 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-コードレビュー" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/" class="article-date">
+  <time class="dt-published" datetime="2025-05-29T15:00:00.000Z" itemprop="datePublished">2025-05-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E8%A1%93/">技術</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/">vimの使用方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>筆者はWHIの夏インターンを参加した時、vimの利用方法が知らなかったし、気まずいでした。ですから、本記事では、<strong>vim</strong> の命令を紹介します。</p>
+<hr>
+<h2 id="📌-本記事の内容"><a href="#📌-本記事の内容" class="headerlink" title="📌 本記事の内容"></a>📌 本記事の内容</h2><ul>
+<li>vimの使用方法</li>
+</ul>
+<hr>
+<h2 id="vimとは"><a href="#vimとは" class="headerlink" title="vimとは"></a>vimとは</h2><p>vimはViの改良版であり、テキストエディタとして多くのプログラマーに愛用されています。軽量かつ高速で、キーボードだけでほぼすべての操作が可能です。</p>
+<h2 id="1-vimの起動と終了"><a href="#1-vimの起動と終了" class="headerlink" title="1. vimの起動と終了"></a>1. vimの起動と終了</h2><h3 id="起動方法"><a href="#起動方法" class="headerlink" title="起動方法"></a>起動方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim [ファイル名]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>例: <code>vim example.txt</code> 既存のファイルを開く&#x2F;新規作成</li>
+</ul>
+<h3 id="終了方法"><a href="#終了方法" class="headerlink" title="終了方法"></a>終了方法</h3><ul>
+<li>ノーマルモードで以下を入力:<ul>
+<li><code>:q</code> - 変更を保存せずに終了</li>
+<li><code>:q!</code> - 強制終了（変更を破棄）</li>
+<li><code>:wq</code> または <code>:x</code> - 保存して終了</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-モードの概要"><a href="#2-モードの概要" class="headerlink" title="2. モードの概要"></a>2. モードの概要</h2><p>vimには主に3つのモードがあります。</p>
+<ul>
+<li>ノーマルモード: 起動直後のモード。コマンド入力が可能。</li>
+<li>挿入モード: テキストの挿入が可能。</li>
+<li>ビジュアルモード: 範囲選択が可能。</li>
+</ul>
+<h3 id="モード切替"><a href="#モード切替" class="headerlink" title="モード切替"></a>モード切替</h3><ul>
+<li>挿入モードへ: <code>i</code>（カーソル位置から挿入）、<code>a</code>（カーソルの次の位置から挿入）、<code>o</code>（下の行に新規行を開く）</li>
+<li>ノーマルモードへ: <code>Esc</code></li>
+<li>ビジュアルモードへ: <code>v</code>（文字単位）、<code>V</code>（行単位）、<code>Ctrl+v</code>（矩形選択）</li>
+</ul>
+<h2 id="3-基本的な移動コマンド"><a href="#3-基本的な移動コマンド" class="headerlink" title="3. 基本的な移動コマンド"></a>3. 基本的な移動コマンド</h2><ul>
+<li><code>h</code> - 左に移動</li>
+<li><code>j</code> - 下に移動</li>
+<li><code>k</code> - 上に移動</li>
+<li><code>l</code> - 右に移動</li>
+<li>数字を前につけると回数指定可能: <code>5j</code> - 5行下へ</li>
+<li><code>gg</code> - ファイル先頭へ</li>
+<li><code>G</code> - ファイル末尾へ</li>
+<li><code>0</code> - 行の先頭へ</li>
+<li><code>$</code> - 行の末尾へ</li>
+</ul>
+<h2 id="4-テキスト編集"><a href="#4-テキスト編集" class="headerlink" title="4. テキスト編集"></a>4. テキスト編集</h2><h3 id="挿入"><a href="#挿入" class="headerlink" title="挿入"></a>挿入</h3><ul>
+<li><code>i</code> - カーソル位置から挿入</li>
+<li><code>I</code> - 行頭から挿入</li>
+<li><code>a</code> - カーソルの次の位置から挿入</li>
+<li><code>A</code> - 行末から挿入</li>
+<li><code>o</code> - 下の行に新行を作成し挿入</li>
+<li><code>O</code> - 上の行に新行を作成し挿入</li>
+</ul>
+<h3 id="削除"><a href="#削除" class="headerlink" title="削除"></a>削除</h3><ul>
+<li><code>x</code> - カーソル位置の文字を削除</li>
+<li><code>dw</code> - カーソル位置から単語の末尾まで削除</li>
+<li><code>d$</code> - カーソル位置から行末まで削除</li>
+<li><code>dd</code> - 行全体を削除</li>
+<li><code>D</code> - カーソル位置から行末まで削除</li>
+</ul>
+<h3 id="コピー・貼り付け（ヤンク・プット）"><a href="#コピー・貼り付け（ヤンク・プット）" class="headerlink" title="コピー・貼り付け（ヤンク・プット）"></a>コピー・貼り付け（ヤンク・プット）</h3><ul>
+<li><code>yy</code> または <code>Y</code> - 行全体をコピー</li>
+<li><code>yw</code> - 単語をコピー</li>
+<li><code>y$</code> - カーソル位置から行末までコピー</li>
+<li><code>p</code> - コピーした内容をカーソルの後に貼り付け</li>
+<li><code>P</code> - コピーした内容をカーソルの前に貼り付け</li>
+</ul>
+<h3 id="置換"><a href="#置換" class="headerlink" title="置換"></a>置換</h3><ul>
+<li><code>r&lt;char&gt;</code> - カーソル位置の文字を <code>&lt;char&gt;</code> に置き換え</li>
+<li><code>R</code> - 上書きモード（上書きしながらテキスト入力）</li>
+</ul>
+<h2 id="5-検索と置換"><a href="#5-検索と置換" class="headerlink" title="5. 検索と置換"></a>5. 検索と置換</h2><ul>
+<li><code>/パターン</code> + <code>Enter</code> - 前方検索</li>
+<li><code>?パターン</code> + <code>Enter</code> - 後方検索</li>
+<li><code>n</code> - 次の検索結果へ</li>
+<li><code>N</code> - 前の検索結果へ</li>
+</ul>
+<h3 id="置換コマンド"><a href="#置換コマンド" class="headerlink" title="置換コマンド"></a>置換コマンド</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:%s/検索文字列/置換文字列/g</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ファイル全体で検索文字列を置換</li>
+<li>行番号を指定して部分置換: <code>:10,20s/foo/bar/g</code></li>
+</ul>
+<h2 id="6-設定とカスタマイズ"><a href="#6-設定とカスタマイズ" class="headerlink" title="6. 設定とカスタマイズ"></a>6. 設定とカスタマイズ</h2><ul>
+<li>設定ファイル: <code>~/.vimrc</code></li>
+<li>主な設定例</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set number        &quot; 行番号を表示</span><br><span class="line">set tabstop=4     &quot; タブ幅を4に設定</span><br><span class="line">set shiftwidth=4  &quot; 自動インデント幅を4に設定</span><br><span class="line">set expandtab     &quot; タブをスペースに変換</span><br><span class="line">syntax on         &quot; シンタックスハイライトを有効化</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-まとめ"><a href="#7-まとめ" class="headerlink" title="7. まとめ"></a>7. まとめ</h2><p>vimは最初こそ使い方に戸惑いますが、慣れると非常に高速かつ効率的にテキスト編集ができます。簡単に言えば、<code>o</code> –&gt; 編集 –&gt; <code>Esc</code> –&gt; <code>:wq</code> または <code>:q</code>で編集できます。本記事で紹介したコマンドを手元で実践し、まずは基本操作を体得しましょう。</p>
+<hr>
+<p>© 2025 汪 新桐（Xintong Wang）<br>ご自由に転載・リンク引用どうぞ 🙌</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasont1202.github.io/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/" data-id="cmbd5ac2y0000ucv4ekwoak78" data-title="vimの使用方法" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Time-LLM：大規模言語モデルの再プログラミングによる時系列予測" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/" class="article-date">
@@ -199,7 +328,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/" data-id="cmb382ray0001ksv4380agao1" data-title="Time-LLM：大規模言語モデルの再プログラミングによる時系列予測" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/" data-id="cmbd5ac340002ucv47uzu4ogq" data-title="Time-LLM：大規模言語モデルの再プログラミングによる時系列予測" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
@@ -275,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/04/19/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmb382rb00002ksv4cp27dbgy" data-title="論文収集 ～arXiv～" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/04/19/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmbd5ac370004ucv4e8g2hta8" data-title="論文収集 ～arXiv～" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
@@ -297,7 +426,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">カテゴリ</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/LLM%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">LLM論文読解</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/LLM%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">LLM論文読解</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E8%A1%93/">技術</a></li></ul>
     </div>
   </div>
 
@@ -323,6 +452,10 @@
     <h3 class="widget-title">最近の投稿</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/">vimの使用方法</a>
+          </li>
         
           <li>
             <a href="/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/">Time-LLM：大規模言語モデルの再プログラミングによる時系列予測</a>
