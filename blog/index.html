@@ -73,6 +73,156 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-DLinear：Transformerは本当に時系列予測に効果的か？" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/06/06/DLinear%EF%BC%9ATransformer%E3%81%AF%E6%9C%AC%E5%BD%93%E3%81%AB%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC%E3%81%AB%E5%8A%B9%E6%9E%9C%E7%9A%84%E3%81%8B%EF%BC%9F/" class="article-date">
+  <time class="dt-published" datetime="2025-06-05T15:00:00.000Z" itemprop="datePublished">2025-06-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%99%82%E7%B3%BB%E5%88%97%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">時系列論文読解</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/06/06/DLinear%EF%BC%9ATransformer%E3%81%AF%E6%9C%AC%E5%BD%93%E3%81%AB%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC%E3%81%AB%E5%8A%B9%E6%9E%9C%E7%9A%84%E3%81%8B%EF%BC%9F/">DLinear：Transformerは本当に時系列予測に効果的か？</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>本記事では、2022年に発表された論文 <strong>「Are Transformers Effective for Time Series Forecasting?」</strong>（通称 <em>DLinear</em>）を紹介します。<br>本研究は「Transformer 系モデルは長期時系列予測（LTSF）に本当に有効か？」という疑問を出発点とし、<strong>極めてシンプルな線形モデル</strong>を提案・検証した結果、最先端 Transformer 群を凌駕する精度を示しました。</p>
+<ul>
+<li><strong>論文リンク</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.13504">https://arxiv.org/abs/2205.13504</a>  </li>
+<li><strong>実装コード</strong>：<a target="_blank" rel="noopener" href="https://github.com/cure-lab/DLinear">https://github.com/cure-lab/DLinear</a></li>
+</ul>
+<p>以下では、モデルフレームワーク、主要コンポーネント、実験結果、コメントの順に概説します。</p>
+<hr>
+<h2 id="モデル概要"><a href="#モデル概要" class="headerlink" title="モデル概要"></a>モデル概要</h2><p>DLinear の基本アイデアは、  </p>
+<ol>
+<li><strong>時系列の系列分解</strong>：移動平均で <em>Trend</em> &#x2F; <em>Remainder (Seasonal)</em> に分割  </li>
+<li><strong>単層線形ネットワーク</strong>：各成分を <em>個別または共有</em> 重みで線形回帰  </li>
+<li><strong>出力の合成</strong>：Trend 予測 + Seasonal 予測</li>
+</ol>
+<p>という 3 ステップのみで長期予測を行うことです。以下の図はフローの概念図です。</p>
+<img src="/pic/dlinear.png" alt="DLinear フレームワーク図" />
+
+<h3 id="1-Series-Decomposition"><a href="#1-Series-Decomposition" class="headerlink" title="1. Series Decomposition"></a>1. Series Decomposition</h3><ul>
+<li><strong>Moving Average (kernel&#x3D;25)</strong> で平滑化し Trend を抽出  </li>
+<li>元系列 − Trend &#x3D; Remainder  </li>
+<li>PyTorch 実装わずか数行で実現可能</li>
+</ul>
+<h3 id="2-Linear-Heads"><a href="#2-Linear-Heads" class="headerlink" title="2. Linear Heads"></a>2. Linear Heads</h3><table>
+<thead>
+<tr>
+<th>バリエーション</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DLinear‑S</strong></td>
+<td>すべての変数で <em>同一</em> 線形層を共有（Shared）</td>
+</tr>
+<tr>
+<td><strong>DLinear‑I</strong></td>
+<td>変数ごとに <em>独立</em> 線形層を持つ（Individual）</td>
+</tr>
+</tbody></table>
+<p>いずれも重みは <code>[出力長 × 入力長]</code> 行列 1 枚のみで、計算量・パラメータ数ともに Transformer 比で桁違いに小さいのが特長です。</p>
+<h3 id="3-予測生成"><a href="#3-予測生成" class="headerlink" title="3. 予測生成"></a>3. 予測生成</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">予測値 ŷ = Linear_T(Trend) + Linear_S(Seasonal)</span><br></pre></td></tr></table></figure>
+
+<p>最後に <code>[Batch, OutputLen, Channel]</code> へ次元を戻して完了です。</p>
+<h3 id="4-実装スニペット"><a href="#4-実装スニペット" class="headerlink" title="4. 実装スニペット"></a>4. 実装スニペット</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">moving_avg</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;移動平均による Trend 抽出ブロック&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, kernel_size, stride=<span class="number">1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="variable language_">self</span>.kernel_size = kernel_size</span><br><span class="line">        <span class="variable language_">self</span>.avg = nn.AvgPool1d(kernel_size, stride, padding=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 両端を複写パディング</span></span><br><span class="line">        front = x[:, :<span class="number">1</span>, :].repeat(<span class="number">1</span>, (<span class="variable language_">self</span>.kernel_size-<span class="number">1</span>)//<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        back  = x[:, -<span class="number">1</span>:, :].repeat(<span class="number">1</span>, (<span class="variable language_">self</span>.kernel_size-<span class="number">1</span>)//<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        x = torch.cat([front, x, back], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.avg(x.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>)).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">series_decomp</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, kernel_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="variable language_">self</span>.mavg = moving_avg(kernel_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        trend = <span class="variable language_">self</span>.mavg(x)</span><br><span class="line">        <span class="keyword">return</span> x - trend, trend  <span class="comment"># remainder, trend</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DLinear</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, seq_len, pred_len, channels, individual=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="variable language_">self</span>.decomp = series_decomp(kernel_size=<span class="number">25</span>)</span><br><span class="line">        <span class="variable language_">self</span>.individual = individual</span><br><span class="line">        <span class="keyword">if</span> individual:</span><br><span class="line">            <span class="variable language_">self</span>.lin_S = nn.ModuleList([nn.Linear(seq_len, pred_len) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(channels)])</span><br><span class="line">            <span class="variable language_">self</span>.lin_T = nn.ModuleList([nn.Linear(seq_len, pred_len) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(channels)])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.lin_S = nn.Linear(seq_len, pred_len)</span><br><span class="line">            <span class="variable language_">self</span>.lin_T = nn.Linear(seq_len, pred_len)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):  <span class="comment"># x: [B, L, C]</span></span><br><span class="line">        S, T = (y.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="variable language_">self</span>.decomp(x))</span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.individual:</span><br><span class="line">            S_out = torch.stack([<span class="variable language_">self</span>.lin_S[i](S[:, i, :]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(S.size(<span class="number">1</span>))], dim=<span class="number">1</span>)</span><br><span class="line">            T_out = torch.stack([<span class="variable language_">self</span>.lin_T[i](T[:, i, :]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(T.size(<span class="number">1</span>))], dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            S_out, T_out = <span class="variable language_">self</span>.lin_S(S), <span class="variable language_">self</span>.lin_T(T)</span><br><span class="line">        <span class="keyword">return</span> (S_out + T_out).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="実験結果"><a href="#実験結果" class="headerlink" title="実験結果"></a>実験結果</h2><h3 id="評価データセット"><a href="#評価データセット" class="headerlink" title="評価データセット"></a>評価データセット</h3><ul>
+<li><strong>交通 (Traffic)</strong>, <strong>電力 (Electricity)</strong>, <strong>天気 (Weather)</strong>, <strong>為替 (Exchange)</strong> ほか計 8 データセット  </li>
+<li>すべて多変量時系列</li>
+</ul>
+<h3 id="指標"><a href="#指標" class="headerlink" title="指標"></a>指標</h3><ul>
+<li><strong>MSE</strong>（Mean Squared Error）  </li>
+<li><strong>MAE</strong>（Mean Absolute Error）</li>
+</ul>
+<h3 id="フルデータ学習"><a href="#フルデータ学習" class="headerlink" title="フルデータ学習"></a>フルデータ学習</h3><table>
+<thead>
+<tr>
+<th>モデル</th>
+<th align="right">MSE</th>
+<th align="right">MAE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Autoformer</td>
+<td align="right">0.193</td>
+<td align="right">0.282</td>
+</tr>
+<tr>
+<td>FEDformer</td>
+<td align="right">0.185</td>
+<td align="right">0.271</td>
+</tr>
+<tr>
+<td><strong>DLinear‑S (本手法)</strong></td>
+<td align="right"><strong>0.167</strong></td>
+<td align="right"><strong>0.249</strong></td>
+</tr>
+</tbody></table>
+<h3 id="入力長を-336-→-720-に拡大"><a href="#入力長を-336-→-720-に拡大" class="headerlink" title="入力長を 336 → 720 に拡大"></a>入力長を 336 → 720 に拡大</h3><table>
+<thead>
+<tr>
+<th>モデル</th>
+<th align="right">MSE (↓良)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Informer</td>
+<td align="right">0.314</td>
+</tr>
+<tr>
+<td>Autoformer</td>
+<td align="right">0.298</td>
+</tr>
+<tr>
+<td><strong>DLinear</strong></td>
+<td align="right"><strong>0.188</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>所見</strong>: Transformer 系は入力長を伸ばすと性能が劣化・横ばいなのに対し、DLinear はむしろ精度向上。</p>
+</blockquote>
+<hr>
+<h2 id="コメント"><a href="#コメント" class="headerlink" title="コメント"></a>コメント</h2><ul>
+<li><strong>驚異的なシンプルさ</strong>：パラメータは数十万分の一、それでいて SOTA に肉薄または上回る。  </li>
+<li><strong>可解釈性</strong>：Trend &#x2F; Seasonal を明示的に扱うため、予測根拠が視覚的に確認しやすい。  </li>
+<li><strong>高速学習</strong>：単なる線形層なので GPU・CPU どちらでも高速に学習・推論可能。  </li>
+<li><strong>限界と今後</strong>：非線形関係や外生変数を考慮するには拡張が必要。統計モデル＋軽量注意機構のハイブリッドが今後の鍵か。</li>
+</ul>
+<hr>
+<p>© 2025 汪 新桐（Xintong Wang）<br>ご自由に転載・リンク引用どうぞ 🙌</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasont1202.github.io/2025/06/06/DLinear%EF%BC%9ATransformer%E3%81%AF%E6%9C%AC%E5%BD%93%E3%81%AB%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC%E3%81%AB%E5%8A%B9%E6%9E%9C%E7%9A%84%E3%81%8B%EF%BC%9F/" data-id="cmbkbyyu100011sv45iea0s7y" data-title="DLinear：Transformerは本当に時系列予測に効果的か？" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-コードレビュー" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/" class="article-date">
@@ -190,7 +340,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/" data-id="cmbd5ac2y0000ucv4ekwoak78" data-title="vimの使用方法" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/" data-id="cmbkbyyue00051sv45rfv9ysc" data-title="vimの使用方法" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
@@ -328,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/" data-id="cmbd5ac340002ucv47uzu4ogq" data-title="Time-LLM：大規模言語モデルの再プログラミングによる時系列予測" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/05/23/Time-LLM%EF%BC%9A%E5%A4%A7%E8%A6%8F%E6%A8%A1%E8%A8%80%E8%AA%9E%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E5%86%8D%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AB%E3%82%88%E3%82%8B%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC/" data-id="cmbkbyyu400021sv4ggnze76m" data-title="Time-LLM：大規模言語モデルの再プログラミングによる時系列予測" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
@@ -404,7 +554,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasont1202.github.io/2025/04/19/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmbd5ac370004ucv4e8g2hta8" data-title="論文収集 ～arXiv～" class="article-share-link"><span class="fa fa-share">共有</span></a>
+      <a data-url="https://jasont1202.github.io/2025/04/19/%E8%AB%96%E6%96%87%E5%8F%8E%E9%9B%86/" data-id="cmbkbyyua00041sv4086zfjce" data-title="論文収集 ～arXiv～" class="article-share-link"><span class="fa fa-share">共有</span></a>
       
       
       
@@ -426,7 +576,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">カテゴリ</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/LLM%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">LLM論文読解</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E8%A1%93/">技術</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/LLM%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">LLM論文読解</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E8%A1%93/">技術</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%99%82%E7%B3%BB%E5%88%97%E8%AB%96%E6%96%87%E8%AA%AD%E8%A7%A3/">時系列論文読解</a></li></ul>
     </div>
   </div>
 
@@ -441,7 +591,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">アーカイブ</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">5月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">4月 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">6月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">5月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">4月 2025</a></li></ul>
     </div>
   </div>
 
@@ -452,6 +602,10 @@
     <h3 class="widget-title">最近の投稿</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/06/06/DLinear%EF%BC%9ATransformer%E3%81%AF%E6%9C%AC%E5%BD%93%E3%81%AB%E6%99%82%E7%B3%BB%E5%88%97%E4%BA%88%E6%B8%AC%E3%81%AB%E5%8A%B9%E6%9E%9C%E7%9A%84%E3%81%8B%EF%BC%9F/">DLinear：Transformerは本当に時系列予測に効果的か？</a>
+          </li>
         
           <li>
             <a href="/2025/05/30/%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/">vimの使用方法</a>
