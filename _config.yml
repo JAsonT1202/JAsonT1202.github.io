@@ -12,7 +12,7 @@ site_theme               : "default"
 title                    : 
 title_separator          : "-"
 name                     : "汪 新桐(オウ　シンドウ)"
-description              : M1 student in Kanazawa University Intelligent Computation and Network Laboratory
+description              : 
 url                      : "https://JAsonT1202.github.io"  
 baseurl                  : "" 
 repository               : "JAsonT1202.github.io"  
@@ -20,8 +20,8 @@ repository               : "JAsonT1202.github.io"
 # Site Author
 author:
   avatar           :  # 
-  name             : "Xintong Wang"
-  bio              : "Network Traffic Prediction, Deep learning, Machine Learning, LLM"
+  name             : "汪 新桐(オウ　シンドウ)"
+  bio              : "M1 student in Kanazawa University, Intelligent Computation and Network Laboratory."
   location         : "Kanazawa , Japan"
   employer         : "Kanazawa University"
   email            : "wangxt@stu.kanazawa-u.ac.jp"
