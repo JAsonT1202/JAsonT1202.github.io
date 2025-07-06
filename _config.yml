@@ -9,10 +9,10 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default"
-title                    : "汪 新桐 (Xintong Wang)"
+title                    : 
 title_separator          : "-"
-name                     : &name "汪 新桐"
-description              : &description "Network Traffic Prediction, Deep learning, Machine Learning, LLM"
+name                     : "汪 新桐(オウ　シンドウ)"
+description              : M1 student in Kanazawa University Intelligent Computation and Network Laboratory
 url                      : "https://JAsonT1202.github.io"  
 baseurl                  : "" 
 repository               : "JAsonT1202.github.io"  
@@ -23,7 +23,7 @@ author:
   name             : "Xintong Wang"
   bio              : "Network Traffic Prediction, Deep learning, Machine Learning, LLM"
   location         : "Kanazawa , Japan"
-  employer         : "Kanazawa University M1"
+  employer         : "Kanazawa University"
   email            : "wangxt@stu.kanazawa-u.ac.jp"
 
   googlescholar    : 
