@@ -16,6 +16,15 @@ layout: compress
     {% include browser-upgrade.html %}
     {% include masthead.html %}
 
+    <!-- Language Switcher -->
+    <nav class="lang-switcher" style="text-align: right; margin: 0.5em 1em;">
+      {% if page.url contains '/ja/' %}
+        <a href="{{ base_path }}/" lang="en">English</a>
+      {% else %}
+        <a href="{{ base_path }}/ja/" lang="ja">日本語</a>
+      {% endif %}
+    </nav>
+
     {{ content }}
 
     <div class="page__footer">

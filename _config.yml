@@ -234,6 +234,15 @@ collections:
 
 # These settings control how pages and collections are included in the site
 defaults:
+  - scope:
+      path: ""       
+    values:
+      lang: "en"      
+  - scope:
+      path: "ja"    
+    values:
+      lang: "ja"      
+
   # _posts
   - scope:
       path: ""
