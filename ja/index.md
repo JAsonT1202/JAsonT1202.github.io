@@ -5,7 +5,6 @@ author_profile: true
 lang: ja
 ---
 
-私は金沢大学電子情報通信学専攻修士1年の学生で、情報ネットワーク研究室に所属しています。指導教授は李 睿棟です。
 私は金沢大学電子情報通信学専攻の修士1年生で[情報ネットワーク研究室](http://www.li-nlab.org/)に所属し、[李　睿棟](https://sites.google.com/site/liruidong/)教授の指導を受けています。
 
 ## Research Interests
