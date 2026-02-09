@@ -1,0 +1,157 @@
+/* ================= 全局设置 ================= */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* 学术界标准字体 */
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+    padding: 20px;
+    background-color: #fff;
+    font-size: 15px;
+}
+
+a { color: #0066cc; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+    max-width: 1100px; /* 限制最大宽度，防止在大屏上太散 */
+    margin: 0 auto;
+}
+
+/* ================= 语言切换按钮 (右上角) ================= */
+.lang-switch-container {
+    text-align: right;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.lang-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 14px; color: #999; padding: 0 5px;
+}
+.lang-btn:hover { color: #333; }
+.lang-btn.active { color: #000; font-weight: bold; border-bottom: 2px solid #333; }
+
+/* 默认隐藏日语，防止页面加载时文字重叠 */
+.lang-ja { display: none; }
+
+
+/* ================= 顶部区域 (核心布局) ================= */
+.header-section {
+    display: flex; /* 启用弹性布局：左边Bio，右边News */
+    gap: 50px;
+    margin-bottom: 50px;
+    align-items: flex-start;
+}
+
+/* 左侧：Bio (占 65%) */
+.profile-col { flex: 65; }
+
+/* 右侧：News (占 35%) */
+.news-col { flex: 35; }
+
+
+/* ================= 个人信息 (Photo + Text) ================= */
+.profile-header {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+.avatar {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px; /* 轻微圆角 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.profile-text h1 {
+    font-size: 28px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+.role { margin: 3px 0; font-weight: bold; color: #555; }
+.email { font-family: "Courier New", monospace; color: #666; margin-top: 8px; }
+.social-links { margin-top: 10px; font-size: 14px; }
+
+
+/* ================= News 滚动栏 (田渊栋风格) ================= */
+.news-col h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+.news-box {
+    height: 350px; /* 固定高度 */
+    overflow-y: scroll; /* 超出部分滚动 */
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+.news-box ul { padding-left: 20px; margin: 0; }
+.news-box li { margin-bottom: 12px; }
+.tag-small {
+    background: #eef; border: 1px solid #ccd;
+    padding: 1px 4px; font-size: 11px; color: #555; border-radius: 3px;
+}
+
+
+/* ================= 导航栏 (Tabs) ================= */
+.nav-section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f4f4f4; /* 浅灰底色条 */
+}
+.tabs-row { display: flex; }
+.tab-btn {
+    border: none; background: none;
+    padding: 12px 25px;
+    font-size: 15px; font-weight: bold; color: #666;
+    cursor: pointer;
+}
+.tab-btn:hover { color: #000; background: #e0e0e0; }
+.tab-btn.active {
+    background-color: #2196F3; /* Meta Blue */
+    color: white;
+}
+
+
+/* ================= 内容列表 (Paper Item) ================= */
+.paper-item {
+    display: flex; /* 左图右文布局 */
+    gap: 25px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 左侧图片 */
+.paper-img {
+    flex: 0 0 220px; /* 固定宽度 */
+}
+.paper-img img, .placeholder-img {
+    width: 100%;
+    border: 1px solid #eee;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+}
+.placeholder-img {
+    height: 120px; background: #eee;
+    display: flex; align-items: center; justify-content: center;
+    color: #888; font-weight: bold;
+}
+
+/* 右侧文字 */
+.paper-info { flex: 1; }
+.paper-title {
+    font-size: 18px; font-weight: bold; color: #000;
+    display: block; margin-bottom: 6px;
+}
+.authors { color: #444; font-size: 14px; margin: 4px 0; }
+.venue { font-style: italic; color: #0066cc; margin-bottom: 8px; }
+.desc { font-size: 14px; color: #555; margin-top: 8px; text-align: justify; }
+
+/* 绿色 Tag */
+.tag-green {
+    background-color: #e8f5e9; color: #2e7d32;
+    padding: 2px 8px; font-size: 12px;
+    margin-right: 5px; font-family: monospace;
+}
