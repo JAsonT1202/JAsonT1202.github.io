@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLMを用いたマルチモーダル時系列分析 - プロジェクト詳細</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* このページ専用の追加スタイル */
+        .project-header { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .project-content h2 { font-size: 20px; margin-top: 30px; margin-bottom: 15px; color: #333; }
+        .project-content p { margin-bottom: 15px; text-align: justify; line-height: 1.8; }
+        .tech-stack { margin: 20px 0; }
+        .tech-tag { background: #f0f0f0; padding: 5px 10px; border-radius: 4px; font-size: 13px; margin-right: 5px; color: #555; }
+        .back-btn { display: inline-block; margin-bottom: 20px; color: #0066cc; font-weight: bold; }
+        .project-img-large { width: 100%; border: 1px solid #eee; border-radius: 5px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">← ホームに戻る</a>
+
+        <div class="project-header">
+            <h1>LLMを用いたマルチモーダル時系列分析技術に関する研究開発</h1>
+            <p style="color: #666; margin-top: 5px;">株式会社日立製作所 研究開発インターンシップ (2025年8月 - 9月)</p>
+        </div>
+
+        <div class="project-content">
+            <h2>概要 (Overview)</h2>
+            <p>
+                時系列予測において、従来の数値データのみを用いた手法では、急激な変化や不規則な動向を完全に予測することが困難なケースが多く存在します。例えば、株価は、単なる過去の数値傾向だけでなく、企業の決算発表、市場のセンチメント、あるいは社会的なイベントといった外部要因に強く影響されます。
+            </p>
+            <p>
+                本インターンシップでは、これらの数値化が難しいテキスト情報を時系列予測に統合するため、大規模言語モデル（LLM）の活用可能性について調査・研究を行いました。LLMを用いることで、数値データとテキストログという異なるモダリティ間の整合性を取った統一的な表現学習が可能となり、より高精度かつ説明性の高い分析フレームワークの構築を目指しました。
+            </p>
+
+            <h2>課題 (Challenges)</h2>
+            <ul>
+                <li style="margin-bottom: 15px;">
+                    <strong>既存データセットの品質と影響力の欠如:</strong><br>
+                    既存のマルチモーダル時系列データセットの多くは品質が低く、テキスト情報が数値情報の変動に対して有意な影響（Influence）を与えられていない（つまり、マルチモーダルである意味が薄い）という問題がありました。
+                </li>
+                <li>
+                    <strong>時間粒度（Timestep-level）への対応不足:</strong><br>
+                    既存の予測フレームワークの多くは、データセット全体に対する静的なテキスト情報（Dataset-level）しか扱えません。企業の決算やニュースのように、各時刻ごとに変動する動的なテキスト情報（Timestep-level）を逐次的に読み込み、予測に反映させる仕組みが存在しませんでした。
+                </li>
+            </ul>
+
+            <h2>手法 (Methodology)</h2>
+            <p>
+                時系列データをトークン化し、LLMに入力可能な形式に変換する新しいフレームワークを提案・検証しました。
+                具体的には、数値データの変動特徴を捉えるエンコーダーと、テキスト情報を処理するLLMのアダプター層を統合することで、精度の高い推論を実現しました。
+            </p>
+            <div class="tech-stack">
+                <strong>使用技術:</strong> 
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">LLM (Llama/GPT)</span>
+                <span class="tech-tag">Time-Series Analysis</span>
+            </div>
+
+            <h2>成果 (Results & Impact)</h2>
+            <p>
+                実験の結果、従来の手法と比較して予測精度が向上し、特にデータがスパースな状況下での頑健性が確認されました。
+                （ここに具体的な定量的成果や、メンターからのフィードバック、あるいはこの研究がビジネスにどう貢献するかといったインパクトを記述してください。）
+            </p>
+        </div>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #eee;">
+        <div style="text-align: center; font-size: 14px; color: #888;">
+            &copy; 2026 Xintong Wang
+        </div>
+    </div>
+
+</body>
+</html>
