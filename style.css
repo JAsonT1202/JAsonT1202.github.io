@@ -1,23 +1,23 @@
 /* ================= 全局设置 ================= */
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* 学术界标准字体 */
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 14px; /* 下半部分保持精致 */
     color: #333;
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
     padding: 20px;
     background-color: #fff;
-    font-size: 15px;
 }
 
 a { color: #0066cc; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .container {
-    max-width: 1100px; /* 限制最大宽度，防止在大屏上太散 */
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-/* ================= 语言切换按钮 (右上角) ================= */
+/* ================= 语言切换按钮 ================= */
 .lang-switch-container {
     text-align: right;
     margin-bottom: 20px;
@@ -25,88 +25,128 @@ a:hover { text-decoration: underline; }
 }
 .lang-btn {
     background: none; border: none; cursor: pointer;
-    font-size: 14px; color: #999; padding: 0 5px;
+    font-size: 13px;
+    color: #999; padding: 0 5px;
+    font-family: inherit;
 }
 .lang-btn:hover { color: #333; }
 .lang-btn.active { color: #000; font-weight: bold; border-bottom: 2px solid #333; }
 
-/* 默认隐藏日语，防止页面加载时文字重叠 */
 .lang-ja { display: none; }
 
 
 /* ================= 顶部区域 (核心布局) ================= */
 .header-section {
-    display: flex; /* 启用弹性布局：左边Bio，右边News */
+    display: flex;
     gap: 50px;
     margin-bottom: 50px;
     align-items: flex-start;
 }
 
-/* 左侧：Bio (占 65%) */
 .profile-col { flex: 65; }
-
-/* 右侧：News (占 35%) */
 .news-col { flex: 35; }
 
 
 /* ================= 个人信息 (Photo + Text) ================= */
 .profile-header {
     display: flex;
-    gap: 25px;
-    margin-bottom: 20px;
+    gap: 30px; /* 增加一点间距以适应大头像 */
+    margin-bottom: 25px;
 }
+
+/* 【修改】头像加大 */
 .avatar {
-    width: 160px;
-    height: 160px;
+    width: 220px;  /* 原来是160px，现在大幅增加 */
+    height: 220px; /* 保持正方形 */
     object-fit: cover;
-    border-radius: 4px; /* 轻微圆角 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* 阴影也稍微加深一点 */
 }
+
+/* 【修改】名字加大 */
 .profile-text h1 {
-    font-size: 28px;
+    font-size: 32px; /* 原来26px -> 加大 */
     margin: 0 0 10px 0;
     font-weight: 700;
+    line-height: 1.2;
 }
-.role { margin: 3px 0; font-weight: bold; color: #555; }
-.email { font-family: "Courier New", monospace; color: #666; margin-top: 8px; }
-.social-links { margin-top: 10px; font-size: 14px; }
+
+/* 【修改】Role/Email 加大 */
+.role { 
+    margin: 4px 0; 
+    font-weight: bold; 
+    color: #555; 
+    font-size: 16px; /* 原来是默认14px -> 加大 */
+}
+.email { 
+    font-family: "Courier New", monospace; 
+    color: #666; 
+    margin-top: 10px; 
+    font-size: 15px; /* 加大 */
+}
+.social-links { 
+    margin-top: 12px; 
+    font-size: 16px; /* 加大 */
+}
 
 
-/* ================= News 滚动栏 (田渊栋风格) ================= */
+/* ================= Bio 文本 ================= */
+/* 【修改】Bio 标题加大 */
+.bio-text h3 {
+    font-size: 22px; /* 原来18px -> 加大 */
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+/* 【修改】Bio 正文加大 */
+.bio-text p {
+    font-size: 16px; /* 原来14px -> 加大 */
+    margin-bottom: 12px;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+
+/* ================= News 滚动栏 ================= */
+/* 【修改】News 标题加大 */
 .news-col h3 {
     margin-top: 0;
     border-bottom: 2px solid #eee;
     padding-bottom: 10px;
+    font-size: 22px; /* 原来18px -> 加大 */
 }
+/* 【修改】News 列表字体加大 */
 .news-box {
-    height: 350px; /* 固定高度 */
-    overflow-y: scroll; /* 超出部分滚动 */
+    height: 380px; /* 高度稍微增加一点以适应大字体 */
+    overflow-y: scroll;
     background: #f9f9f9;
     border: 1px solid #e0e0e0;
     padding: 15px;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 15px; /* 原来13px -> 加大 */
+    line-height: 1.5;
 }
 .news-box ul { padding-left: 20px; margin: 0; }
 .news-box li { margin-bottom: 12px; }
 .tag-small {
     background: #eef; border: 1px solid #ccd;
-    padding: 1px 4px; font-size: 11px; color: #555; border-radius: 3px;
+    padding: 1px 4px; font-size: 12px; color: #555; border-radius: 3px;
 }
 
 
-/* ================= 导航栏 (Tabs) ================= */
+/* ================= 导航栏 (Tabs) - 保持精致 ================= */
 .nav-section {
     margin-bottom: 30px;
     border-bottom: 1px solid #ddd;
-    background-color: #f4f4f4; /* 浅灰底色条 */
+    background-color: #f4f4f4;
 }
 .tabs-row { display: flex; }
 .tab-btn {
     border: none; background: none;
     padding: 12px 25px;
-    font-size: 15px; font-weight: bold; color: #666;
+    font-size: 14px; 
+    font-weight: bold; color: #666;
     cursor: pointer;
+    font-family: inherit;
 }
 .tab-btn:hover { color: #000; background: #e0e0e0; }
 .tab-btn.active {
@@ -115,19 +155,16 @@ a:hover { text-decoration: underline; }
 }
 
 
-/* ================= 内容列表 (Paper Item) ================= */
+/* ================= 内容列表 (Paper Item) - 保持精致 ================= */
 .paper-item {
-    display: flex; /* 左图右文布局 */
+    display: flex;
     gap: 25px;
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 1px solid #f0f0f0;
 }
 
-/* 左侧图片 */
-.paper-img {
-    flex: 0 0 220px; /* 固定宽度 */
-}
+.paper-img { flex: 0 0 220px; }
 .paper-img img, .placeholder-img {
     width: 100%;
     border: 1px solid #eee;
@@ -139,19 +176,18 @@ a:hover { text-decoration: underline; }
     color: #888; font-weight: bold;
 }
 
-/* 右侧文字 */
 .paper-info { flex: 1; }
 .paper-title {
-    font-size: 18px; font-weight: bold; color: #000;
+    font-size: 17px; 
+    font-weight: bold; color: #000;
     display: block; margin-bottom: 6px;
+    line-height: 1.4;
 }
 .authors { color: #444; font-size: 14px; margin: 4px 0; }
-.venue { font-style: italic; color: #0066cc; margin-bottom: 8px; }
-.desc { font-size: 14px; color: #555; margin-top: 8px; text-align: justify; }
-
-/* 绿色 Tag */
-.tag-green {
-    background-color: #e8f5e9; color: #2e7d32;
-    padding: 2px 8px; font-size: 12px;
-    margin-right: 5px; font-family: monospace;
+.venue { font-style: italic; color: #0066cc; margin-bottom: 8px; font-size: 14px; }
+.desc { 
+    font-size: 13.5px; 
+    color: #555; 
+    margin-top: 8px; 
+    text-align: justify; 
 }
