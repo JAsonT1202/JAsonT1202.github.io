@@ -8,17 +8,160 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* このページ専用の追加スタイル */
-        .project-header { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        .project-content h2 { font-size: 20px; margin-top: 30px; margin-bottom: 15px; color: #333; }
-        .project-content p { margin-bottom: 15px; text-align: justify; line-height: 1.8; }
-        .tech-stack { margin: 20px 0; }
-        .tech-tag { background: #f0f0f0; padding: 5px 10px; border-radius: 4px; font-size: 13px; margin-right: 5px; color: #555; }
-        .back-btn { display: inline-block; margin-bottom: 20px; color: #0066cc; font-weight: bold; }
-        .project-img-large { width: 100%; border: 1px solid #eee; border-radius: 5px; margin: 20px 0; }
+        /* === 基本スタイル === */
+        body {
+            font-family: 'Lato', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px; /* PCでは幅800px */
+            width: 90%;       /* スマホでは画面の90% */
+            margin: 40px auto;
+            background: #fff;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0066cc;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-btn:hover { text-decoration: underline; }
+
+        .project-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .project-header h1 {
+            font-size: 28px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .project-content h2 {
+            font-size: 20px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #222;
+            border-left: 4px solid #0066cc; /* アクセントライン */
+            padding-left: 10px;
+        }
+        
+        .project-content h3 {
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #444;
+            font-weight: bold;
+        }
+
+        .project-content p, .project-content li {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .project-content ul {
+            padding-left: 20px;
+        }
+
+        /* 技術スタックのタグ */
+        .tech-stack {
+            margin: 30px 0;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .tech-tag {
+            display: inline-block;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        /* 画像スタイル (センタリング強化) */
+        .project-img-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 左右中央揃え */
+            justify-content: center;
+            text-align: center;
+            margin: 30px 0;
+            width: 100%;
+        }
+        .project-img-large {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .img-caption {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+
+        /* 参考文献リスト */
+        .reference-list {
+            font-size: 13px;
+            color: #555;
+            padding-left: 20px;
+            list-style-type: none; /* デフォルトの番号を消す */
+        }
+        .reference-list li {
+            margin-bottom: 10px;
+            text-align: left;
+            word-break: break-all;
+            text-indent: -20px; /* ぶら下げインデント */
+            margin-left: 20px;
+        }
+
+        /* 結果強調用のボックス */
+        .result-box {
+            background: #f0f7ff; 
+            padding: 20px; 
+            border-radius: 6px; 
+            border-left: 5px solid #0066cc;
+            margin: 20px 0;
+        }
+
+        /* === スマホ向けレスポンシブ設定 (画面幅 768px 以下) === */
+        @media screen and (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+                width: 92%;
+            }
+            .project-header h1 { font-size: 22px; }
+            .project-content h2 { font-size: 18px; margin-top: 30px; }
+            .project-content p, .project-content li {
+                font-size: 15px;
+                text-align: left;
+            }
+            .tech-stack { padding: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -28,10 +171,11 @@
 
         <div class="project-header">
             <h1>LLMを用いたマルチモーダル時系列分析技術に関する研究開発</h1>
-            <p style="color: #666; margin-top: 5px;">株式会社日立製作所 研究開発インターンシップ (2025年8月 - 9月)</p>
+            <p style="color: #666; margin-top: 5px; font-size: 14px;">株式会社日立製作所 研究開発インターンシップ (2025年8月 - 9月)</p>
         </div>
 
         <div class="project-content">
+            
             <h2>概要 (Overview)</h2>
             <p>
                 時系列予測において、従来の数値データのみを用いた手法では、急激な変化や不規則な動向を完全に予測することが困難なケースが多く存在します。例えば、株価は、単なる過去の数値傾向だけでなく、企業の決算発表、市場のセンチメント、あるいは社会的なイベントといった外部要因に強く影響されます。
@@ -53,27 +197,82 @@
             </ul>
 
             <h2>手法 (Methodology)</h2>
+            
+            <h3>1. Time-LLMの改良 (Time-LLM as Baseline)</h3>
             <p>
-                時系列データをトークン化し、LLMに入力可能な形式に変換する新しいフレームワークを提案・検証しました。
-                具体的には、数値データの変動特徴を捉えるエンコーダーと、テキスト情報を処理するLLMのアダプター層を統合することで、精度の高い推論を実現しました。
+                本プロジェクトでは、時系列基盤モデルとして注目される <strong>Time-LLM</strong> [1] をベースラインとして採用しました。
             </p>
+
+            <div class="project-img-container">
+                <img src="images/timellm.png" alt="Time-LLM Architecture" class="project-img-large">
+                <p class="img-caption">図: Time-LLMのアーキテクチャ概要 [1]</p>
+            </div>
+
+            <p>
+                オリジナルのTime-LLMは、データセット全体に対して単一の固定プロンプト（Dataset-level prompt）しか入力できないという制約がありました。
+                そこで本研究では、Time-LLMのアーキテクチャを拡張し、<strong>各時刻ごとに変化する動的なテキスト情報（Timestep-level prompt）</strong>を逐次的に読み込み、予測に反映させる新たな機構を開発しました。これにより、市場ニュースや突発的なイベント情報をリアルタイムにモデルへ注入することが可能になりました。
+            </p>
+
+            <h3>2. Timestep-levelマルチモーダルデータセットの構築</h3>
+            <p>
+                提案手法を検証するため、数値データとテキストデータが時刻ごとに密に紐付いた「Timestep-levelマルチモーダルデータセット」を構築しました。
+                具体的には、既存のデータセットスイートである <strong>MoTime</strong> [2] をベースとし、その中の <strong>WikiPeople</strong> サブセットを拡張しました。
+            </p>
+            <p>
+                元のWikiPeopleデータセットに対し、各タイムステップ（Timestep）に対応する関連ニュース記事を収集し、時系列順に付与することで、数値変動とテキスト情報が動的に連動する高品質なデータセットを作成しました。
+            </p>
+
             <div class="tech-stack">
-                <strong>使用技術:</strong> 
+                <div style="margin-bottom: 8px; font-weight: bold;">使用技術:</div>
                 <span class="tech-tag">Python</span>
                 <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">Time-LLM</span>
                 <span class="tech-tag">LLM (Llama/GPT)</span>
-                <span class="tech-tag">Time-Series Analysis</span>
             </div>
 
             <h2>成果 (Results & Impact)</h2>
             <p>
-                実験の結果、従来の手法と比較して予測精度が向上し、特にデータがスパースな状況下での頑健性が確認されました。
-                （ここに具体的な定量的成果や、メンターからのフィードバック、あるいはこの研究がビジネスにどう貢献するかといったインパクトを記述してください。）
+                評価指標として <strong>MSE (Mean Squared Error)</strong> および <strong>MAE (Mean Absolute Error)</strong> を用い、Dataset-levelのテキスト情報のみを使用する従来のTime-LLM（ベースライン）と提案手法の精度を比較しました。
             </p>
+            
+            <div class="result-box">
+                <p style="margin-bottom: 10px;"><strong>実験結果:</strong></p>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li style="margin-bottom: 8px;">
+                        <strong>MSE (平均二乗誤差):</strong> ベースライン比 <span style="color: #d32f2f; font-weight: bold;">17.5% 改善 (低下)</span>
+                    </li>
+                    <li>
+                        <strong>MAE (平均絶対誤差):</strong> ベースライン比 <span style="color: #d32f2f; font-weight: bold;">9.2% 改善 (低下)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p>
+                この結果は、ニュースなどの動的なテキスト情報をタイムステップごとにモデルに取り込むことが、予測精度の向上に不可欠であることを定量的に示しています。
+            </p>
+
+            <h2>参考文献 (References)</h2>
+            <ul class="reference-list">
+                <li>
+                    [1] Jin, M., Wang, S., Ma, L., Chu, Z., Zhang, J. Y., Shi, X., ... & Wen, Q. (2023). 
+                    <a href="https://arxiv.org/abs/2310.01728" target="_blank" style="color:#555; text-decoration:underline;">
+                        Time-LLM: Time Series Forecasting by Reprogramming Large Language Models.
+                    </a>
+                    arXiv preprint arXiv:2310.01728.
+                </li>
+                <li>
+                    [2] Zhou, X., Wang, W., Baldán, F. J., Buntine, W., & Bergmeir, C. (2025). 
+                    <a href="https://arxiv.org/abs/2505.15072" target="_blank" style="color:#555; text-decoration:underline;">
+                        MoTime: A Dataset Suite for Multimodal Time Series Forecasting.
+                    </a>
+                    arXiv preprint arXiv:2505.15072.
+                </li>
+            </ul>
+
         </div>
 
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #eee;">
-        <div style="text-align: center; font-size: 14px; color: #888;">
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
+        <div style="text-align: center; font-size: 13px; color: #888; padding-bottom: 20px;">
             &copy; 2026 Xintong Wang
         </div>
     </div>
